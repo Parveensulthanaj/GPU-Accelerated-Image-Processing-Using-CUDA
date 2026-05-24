@@ -1,0 +1,177 @@
+# GPU Accelerated Image Processing Using CUDA
+
+# Name:Parveen Sulthana J
+# Register Number:212224040233
+# Date: 24/05/2026
+
+## Project Overview
+
+This project performs image processing using GPU acceleration with CUDA and OpenCV CUDA libraries.
+
+The application processes multiple images using GPU computation and applies:
+- Grayscale Conversion
+- Gaussian Blur
+- Edge Detection
+
+The project demonstrates parallel image processing using CUDA-enabled GPU operations.
+
+---
+
+# Technologies Used
+
+- Python
+- CUDA
+- OpenCV CUDA
+- Google Colab
+
+---
+
+# Features
+
+- GPU Accelerated Image Processing
+- Batch Processing of Multiple Images
+- Edge Detection
+- Image Filtering
+- CUDA-based GPU Computation
+
+---
+
+# How to Run
+
+## Step 1
+Open Google Colab
+
+## Step 2
+Enable GPU:
+Runtime → Change Runtime Type → GPU
+
+## Step 3
+Install OpenCV
+
+```python
+!pip install opencv-python-headless
+```
+
+## Step 4
+Upload Images
+
+```python
+from google.colab import files
+uploaded = files.upload()
+```
+
+## Step 5
+Run Processing Script
+
+## Step 6
+Download Results
+
+---
+
+# GPU Operations Used
+
+- cv2.cuda.cvtColor()
+- cv2.cuda.createGaussianFilter()
+- GPU memory upload/download
+
+---
+
+# Program
+```
+!nvidia-smi
+```
+
+```
+!pip install opencv-python-headless
+```
+
+```
+from google.colab import files
+
+uploaded = files.upload()
+```
+
+```
+import cv2
+import os
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+# Create output folder
+os.makedirs("processed_images", exist_ok=True)
+
+# Get uploaded image names
+image_files = list(uploaded.keys())
+
+print("Processing Images on CPU...\n")
+
+for image_name in image_files:
+
+    print("Processing:", image_name)
+
+    # Read image
+    img = cv2.imread(image_name)
+
+    if img is None:
+        print("Failed to load:", image_name)
+        continue
+
+    # Convert to grayscale on CPU
+    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Gaussian Blur on CPU
+    blur_img = cv2.GaussianBlur(gray_img, (5, 5), 1)
+
+    # Edge Detection on CPU
+    edges = cv2.Canny(blur_img, 100, 200)
+
+    # Save output
+    output_name = "processed_" + image_name
+
+    cv2.imwrite(
+        os.path.join("processed_images", output_name),
+        edges
+    )
+
+    print("Saved:", output_name)
+
+print("\nAll images processed successfully!")
+
+import os
+from google.colab.patches import cv2_imshow
+
+output_files = os.listdir("processed_images")
+
+for file in output_files[:5]:
+
+    print("Showing:", file)
+
+    img = cv2.imread(
+        os.path.join("processed_images", file),
+        cv2.IMREAD_GRAYSCALE
+    )
+
+    cv2_imshow(img)
+```
+
+```
+!zip -r processed_images.zip processed_images
+```
+
+```
+
+from google.colab import files
+
+files.download("processed_images.zip")
+```
+
+# Output
+
+<img width="220" height="64" alt="gpu3" src="https://github.com/user-attachments/assets/e96fa7c3-58cd-48ff-ba9b-4d7a481ce5ed" />
+<img width="400" height="251" alt="gpu4" src="https://github.com/user-attachments/assets/bcae4bf8-2e03-432b-88e8-368b9274dd05" />
+
+---
+
+# Conclusion
+
+This project demonstrates GPU-based image processing using CUDA acceleration and OpenCV CUDA libraries.
